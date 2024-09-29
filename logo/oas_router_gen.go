@@ -48,26 +48,62 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		switch elem[0] {
-		case '/': // Prefix: "/logos"
+		case '/': // Prefix: "/"
 			origElem := elem
-			if l := len("/logos"); len(elem) >= l && elem[0:l] == "/logos" {
+			if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
 				elem = elem[l:]
 			} else {
 				break
 			}
 
 			if len(elem) == 0 {
-				// Leaf node.
-				switch r.Method {
-				case "GET":
-					s.handleGetLogoListRequest([0]string{}, elemIsEscaped, w, r)
-				case "POST":
-					s.handleCreateLogoRequest([0]string{}, elemIsEscaped, w, r)
-				default:
-					s.notAllowed(w, r, "GET,POST")
+				break
+			}
+			switch elem[0] {
+			case 'l': // Prefix: "logos"
+				origElem := elem
+				if l := len("logos"); len(elem) >= l && elem[0:l] == "logos" {
+					elem = elem[l:]
+				} else {
+					break
 				}
 
-				return
+				if len(elem) == 0 {
+					// Leaf node.
+					switch r.Method {
+					case "GET":
+						s.handleGetLogoListRequest([0]string{}, elemIsEscaped, w, r)
+					case "POST":
+						s.handleCreateLogoRequest([0]string{}, elemIsEscaped, w, r)
+					default:
+						s.notAllowed(w, r, "GET,POST")
+					}
+
+					return
+				}
+
+				elem = origElem
+			case 't': // Prefix: "token"
+				origElem := elem
+				if l := len("token"); len(elem) >= l && elem[0:l] == "token" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				if len(elem) == 0 {
+					// Leaf node.
+					switch r.Method {
+					case "POST":
+						s.handleGetTokenRequest([0]string{}, elemIsEscaped, w, r)
+					default:
+						s.notAllowed(w, r, "POST")
+					}
+
+					return
+				}
+
+				elem = origElem
 			}
 
 			elem = origElem
@@ -151,36 +187,76 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 			break
 		}
 		switch elem[0] {
-		case '/': // Prefix: "/logos"
+		case '/': // Prefix: "/"
 			origElem := elem
-			if l := len("/logos"); len(elem) >= l && elem[0:l] == "/logos" {
+			if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
 				elem = elem[l:]
 			} else {
 				break
 			}
 
 			if len(elem) == 0 {
-				// Leaf node.
-				switch method {
-				case "GET":
-					r.name = "GetLogoList"
-					r.summary = "Get collections of logos"
-					r.operationID = "getLogoList"
-					r.pathPattern = "/logos"
-					r.args = args
-					r.count = 0
-					return r, true
-				case "POST":
-					r.name = "CreateLogo"
-					r.summary = "Create a new logo"
-					r.operationID = "createLogo"
-					r.pathPattern = "/logos"
-					r.args = args
-					r.count = 0
-					return r, true
-				default:
-					return
+				break
+			}
+			switch elem[0] {
+			case 'l': // Prefix: "logos"
+				origElem := elem
+				if l := len("logos"); len(elem) >= l && elem[0:l] == "logos" {
+					elem = elem[l:]
+				} else {
+					break
 				}
+
+				if len(elem) == 0 {
+					// Leaf node.
+					switch method {
+					case "GET":
+						r.name = "GetLogoList"
+						r.summary = "Get collections of logos"
+						r.operationID = "getLogoList"
+						r.pathPattern = "/logos"
+						r.args = args
+						r.count = 0
+						return r, true
+					case "POST":
+						r.name = "CreateLogo"
+						r.summary = "Create a new logo"
+						r.operationID = "createLogo"
+						r.pathPattern = "/logos"
+						r.args = args
+						r.count = 0
+						return r, true
+					default:
+						return
+					}
+				}
+
+				elem = origElem
+			case 't': // Prefix: "token"
+				origElem := elem
+				if l := len("token"); len(elem) >= l && elem[0:l] == "token" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				if len(elem) == 0 {
+					// Leaf node.
+					switch method {
+					case "POST":
+						r.name = "GetToken"
+						r.summary = "Get a token"
+						r.operationID = "getToken"
+						r.pathPattern = "/token"
+						r.args = args
+						r.count = 0
+						return r, true
+					default:
+						return
+					}
+				}
+
+				elem = origElem
 			}
 
 			elem = origElem

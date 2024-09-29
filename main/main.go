@@ -45,5 +45,6 @@ func newRouter() (http.Handler, error) {
 
 func newAPIRouter() (http.Handler, error) {
 	service := NewLogoService()
-	return logo.NewServer(service)
+	auth := NewTokenService()
+	return logo.NewServer(service, auth)
 }

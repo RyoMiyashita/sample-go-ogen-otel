@@ -6,8 +6,34 @@ servers:
   - url: http://localhost:8080/api
     description: Local server
 tags:
+  - name: auth
   - name: logo
 paths:
+  /token:
+    post:
+      tags:
+        - auth
+      summary: Get a token
+      operationId: getToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        default:
+          description: General error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /logos:
     get:
       tags:
@@ -33,6 +59,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: [ ]
     post:
       tags:
         - logo
@@ -53,8 +81,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: [ ]
 components:
   schemas:
+    TokenRequest:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          description: The email of the user
+    TokenResponse:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+          description: The token
     LogoSearchResult:
       type: object
       required:
@@ -112,3 +158,8 @@ components:
         message:
           type: string
           description: The error message
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

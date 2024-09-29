@@ -11,6 +11,20 @@ func (s *ErrorStatusCode) Error() string {
 	return fmt.Sprintf("code %d: %+v", s.StatusCode, s.Response)
 }
 
+type BearerAuth struct {
+	Token string
+}
+
+// GetToken returns the value of Token.
+func (s *BearerAuth) GetToken() string {
+	return s.Token
+}
+
+// SetToken sets the value of Token.
+func (s *BearerAuth) SetToken(val string) {
+	s.Token = val
+}
+
 // CreateLogoNoContent is response for CreateLogo operation.
 type CreateLogoNoContent struct{}
 
@@ -208,4 +222,36 @@ func (o OptInt64) Or(d int64) int64 {
 		return v
 	}
 	return d
+}
+
+// Ref: #/components/schemas/TokenRequest
+type TokenRequest struct {
+	// The email of the user.
+	Email string `json:"email"`
+}
+
+// GetEmail returns the value of Email.
+func (s *TokenRequest) GetEmail() string {
+	return s.Email
+}
+
+// SetEmail sets the value of Email.
+func (s *TokenRequest) SetEmail(val string) {
+	s.Email = val
+}
+
+// Ref: #/components/schemas/TokenResponse
+type TokenResponse struct {
+	// The token.
+	Token string `json:"token"`
+}
+
+// GetToken returns the value of Token.
+func (s *TokenResponse) GetToken() string {
+	return s.Token
+}
+
+// SetToken sets the value of Token.
+func (s *TokenResponse) SetToken(val string) {
+	s.Token = val
 }

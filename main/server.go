@@ -7,9 +7,15 @@ import (
 	"sync"
 	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 
 	"sample-ogen-otel/logo"
+)
+
+const (
+	Issuer = "logo"
+	Expiry = 24 * time.Hour
 )
 
 type LogoService struct {
@@ -23,6 +29,29 @@ func NewLogoService() *LogoService {
 	return &LogoService{
 		logos: make(map[string]logo.LogoDetail),
 	}
+}
+
+func (l *LogoService) GetToken(ctx context.Context, req *logo.TokenRequest) (*logo.TokenResponse, error) {
+	email := req.Email
+	if email == "" {
+		return nil, fmt.Errorf("email is required")
+	}
+
+	claims := jwt.MapClaims{
+		"email": email,
+		"iss":   Issuer,
+		"exp":   time.Now().Add(Expiry).Unix(),
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString([]byte(getTokenSecret()))
+	if err != nil {
+		return nil, fmt.Errorf("failed to sign token: %w", err)
+	}
+
+	return &logo.TokenResponse{
+		Token: tokenString,
+	}, nil
 }
 
 func (l *LogoService) CreateLogo(ctx context.Context, req *logo.LogoCreate) error {
