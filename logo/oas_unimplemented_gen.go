@@ -31,6 +31,15 @@ func (UnimplementedHandler) GetLogoList(ctx context.Context, params GetLogoListP
 	return r, ht.ErrNotImplemented
 }
 
+// GetToken implements getToken operation.
+//
+// Get a token.
+//
+// POST /token
+func (UnimplementedHandler) GetToken(ctx context.Context, req *TokenRequest) (r *TokenResponse, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
 // NewError creates *ErrorStatusCode from error returned by handler.
 //
 // Used for common default response.
