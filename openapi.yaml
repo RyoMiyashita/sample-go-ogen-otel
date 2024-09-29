@@ -3,7 +3,7 @@ info:
   version: 1.0.0
   title: Logo API
 servers:
-  - url: http://localhost:8000/api
+  - url: http://localhost:8080/api
     description: Local server
 tags:
   - name: logo
@@ -74,8 +74,6 @@ components:
       required:
         - logoId
         - name
-        - accountId
-        - accountName
         - createdAt
         - updatedAt
       properties:
@@ -85,12 +83,6 @@ components:
         name:
           type: string
           description: The name of the logo
-        accountId:
-          type: string
-          description: The unique identifier of the account
-        accountName:
-          type: string
-          description: The name of the account who updated the logo
         createdAt:
           type: string
           format: date-time
@@ -103,14 +95,10 @@ components:
       type: object
       required:
         - name
-        - accountId
       properties:
         name:
           type: string
           description: The name of the logo
-        accountId:
-          type: string
-          description: The unique identifier of the account
     Error:
       type: object
       required:
