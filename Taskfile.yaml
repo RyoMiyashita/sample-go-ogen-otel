@@ -1,0 +1,16 @@
+version: '3'
+
+tasks:
+  install:
+    aliases: [ i ]
+    cmds:
+      - go mod download
+    sources:
+      - go.mod
+    generates:
+      - go.sum
+  generate:
+    aliases: [ gen ]
+    cmds:
+      - go generate ./...
+      - cp openapi.yaml main/static/alias_openapi.yaml

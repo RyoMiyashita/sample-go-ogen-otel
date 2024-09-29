@@ -1,0 +1,126 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Logo API
+servers:
+  - url: http://localhost:8000/api
+    description: Local server
+tags:
+  - name: logo
+paths:
+  /logos:
+    get:
+      tags:
+        - logo
+      summary: Get collections of logos
+      operationId: getLogoList
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogoSearchResult'
+        default:
+          description: General error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - logo
+      summary: Create a new logo
+      operationId: createLogo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogoCreate'
+      responses:
+        '204':
+          description: OK
+        default:
+          description: General error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    LogoSearchResult:
+      type: object
+      required:
+        - logos
+        - totalCount
+      properties:
+        logos:
+          type: array
+          items:
+            $ref: '#/components/schemas/LogoDetail'
+          description: The logos
+        totalCount:
+          type: integer
+          description: The total count of logos
+    LogoDetail:
+      type: object
+      required:
+        - logoId
+        - name
+        - accountId
+        - accountName
+        - createdAt
+        - updatedAt
+      properties:
+        logoId:
+          type: string
+          description: The unique identifier of the logo
+        name:
+          type: string
+          description: The name of the logo
+        accountId:
+          type: string
+          description: The unique identifier of the account
+        accountName:
+          type: string
+          description: The name of the account who updated the logo
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time when the logo was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time when the logo was updated
+    LogoCreate:
+      type: object
+      required:
+        - name
+        - accountId
+      properties:
+        name:
+          type: string
+          description: The name of the logo
+        accountId:
+          type: string
+          description: The unique identifier of the account
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: The error code
+        message:
+          type: string
+          description: The error message
