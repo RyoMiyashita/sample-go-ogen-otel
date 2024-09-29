@@ -139,15 +139,10 @@ func (s *LogoCreate) encodeFields(e *jx.Encoder) {
 		e.FieldStart("name")
 		e.Str(s.Name)
 	}
-	{
-		e.FieldStart("accountId")
-		e.Str(s.AccountId)
-	}
 }
 
-var jsonFieldsNameOfLogoCreate = [2]string{
+var jsonFieldsNameOfLogoCreate = [1]string{
 	0: "name",
-	1: "accountId",
 }
 
 // Decode decodes LogoCreate from json.
@@ -171,18 +166,6 @@ func (s *LogoCreate) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"name\"")
 			}
-		case "accountId":
-			requiredBitSet[0] |= 1 << 1
-			if err := func() error {
-				v, err := d.Str()
-				s.AccountId = string(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"accountId\"")
-			}
 		default:
 			return d.Skip()
 		}
@@ -193,7 +176,7 @@ func (s *LogoCreate) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00000011,
+		0b00000001,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -257,14 +240,6 @@ func (s *LogoDetail) encodeFields(e *jx.Encoder) {
 		e.Str(s.Name)
 	}
 	{
-		e.FieldStart("accountId")
-		e.Str(s.AccountId)
-	}
-	{
-		e.FieldStart("accountName")
-		e.Str(s.AccountName)
-	}
-	{
 		e.FieldStart("createdAt")
 		json.EncodeDateTime(e, s.CreatedAt)
 	}
@@ -274,13 +249,11 @@ func (s *LogoDetail) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfLogoDetail = [6]string{
+var jsonFieldsNameOfLogoDetail = [4]string{
 	0: "logoId",
 	1: "name",
-	2: "accountId",
-	3: "accountName",
-	4: "createdAt",
-	5: "updatedAt",
+	2: "createdAt",
+	3: "updatedAt",
 }
 
 // Decode decodes LogoDetail from json.
@@ -316,32 +289,8 @@ func (s *LogoDetail) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"name\"")
 			}
-		case "accountId":
-			requiredBitSet[0] |= 1 << 2
-			if err := func() error {
-				v, err := d.Str()
-				s.AccountId = string(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"accountId\"")
-			}
-		case "accountName":
-			requiredBitSet[0] |= 1 << 3
-			if err := func() error {
-				v, err := d.Str()
-				s.AccountName = string(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"accountName\"")
-			}
 		case "createdAt":
-			requiredBitSet[0] |= 1 << 4
+			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := json.DecodeDateTime(d)
 				s.CreatedAt = v
@@ -353,7 +302,7 @@ func (s *LogoDetail) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"createdAt\"")
 			}
 		case "updatedAt":
-			requiredBitSet[0] |= 1 << 5
+			requiredBitSet[0] |= 1 << 3
 			if err := func() error {
 				v, err := json.DecodeDateTime(d)
 				s.UpdatedAt = v
@@ -374,7 +323,7 @@ func (s *LogoDetail) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00111111,
+		0b00001111,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.

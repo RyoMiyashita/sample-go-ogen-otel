@@ -36,7 +36,7 @@ func newRouter() (http.Handler, error) {
 	if err != nil {
 		return nil, err
 	}
-	mux.Handle("/api/", api)
+	mux.Handle("/api/", http.StripPrefix("/api", api))
 	mux.Handle("/static/", http.FileServer(http.FS(files)))
 	mux.Handle("/swagger-ui", swaggerui.HandleSwaggerUI("http://localhost:8080/static/alias_openapi.yaml"))
 

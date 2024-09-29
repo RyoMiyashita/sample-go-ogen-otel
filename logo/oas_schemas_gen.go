@@ -72,8 +72,6 @@ func (s *ErrorStatusCode) SetResponse(val Error) {
 type LogoCreate struct {
 	// The name of the logo.
 	Name string `json:"name"`
-	// The unique identifier of the account.
-	AccountId string `json:"accountId"`
 }
 
 // GetName returns the value of Name.
@@ -81,19 +79,9 @@ func (s *LogoCreate) GetName() string {
 	return s.Name
 }
 
-// GetAccountId returns the value of AccountId.
-func (s *LogoCreate) GetAccountId() string {
-	return s.AccountId
-}
-
 // SetName sets the value of Name.
 func (s *LogoCreate) SetName(val string) {
 	s.Name = val
-}
-
-// SetAccountId sets the value of AccountId.
-func (s *LogoCreate) SetAccountId(val string) {
-	s.AccountId = val
 }
 
 // Ref: #/components/schemas/LogoDetail
@@ -102,10 +90,6 @@ type LogoDetail struct {
 	LogoId string `json:"logoId"`
 	// The name of the logo.
 	Name string `json:"name"`
-	// The unique identifier of the account.
-	AccountId string `json:"accountId"`
-	// The name of the account who updated the logo.
-	AccountName string `json:"accountName"`
 	// The date and time when the logo was created.
 	CreatedAt time.Time `json:"createdAt"`
 	// The date and time when the logo was updated.
@@ -120,16 +104,6 @@ func (s *LogoDetail) GetLogoId() string {
 // GetName returns the value of Name.
 func (s *LogoDetail) GetName() string {
 	return s.Name
-}
-
-// GetAccountId returns the value of AccountId.
-func (s *LogoDetail) GetAccountId() string {
-	return s.AccountId
-}
-
-// GetAccountName returns the value of AccountName.
-func (s *LogoDetail) GetAccountName() string {
-	return s.AccountName
 }
 
 // GetCreatedAt returns the value of CreatedAt.
@@ -150,16 +124,6 @@ func (s *LogoDetail) SetLogoId(val string) {
 // SetName sets the value of Name.
 func (s *LogoDetail) SetName(val string) {
 	s.Name = val
-}
-
-// SetAccountId sets the value of AccountId.
-func (s *LogoDetail) SetAccountId(val string) {
-	s.AccountId = val
-}
-
-// SetAccountName sets the value of AccountName.
-func (s *LogoDetail) SetAccountName(val string) {
-	s.AccountName = val
 }
 
 // SetCreatedAt sets the value of CreatedAt.
